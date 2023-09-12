@@ -6,6 +6,4 @@ public class work2 {
     public static float duplicateChars (int x){
         return x * 3.785f;
     }
-
-
 }

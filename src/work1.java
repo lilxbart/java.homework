@@ -19,12 +19,13 @@ public class work1 { //задание 1
     public static int fitCalc (int x, int y){
         return x * y;
     }
+
     //задание 3
     public static int containers (int x, int y, int z) {
         return x * 20 + y * 50 + z * 100;
     }
 
-    //задание 4
+    //задание 4 (ИЛИ ||, И &&)
     public static String triangleType (int x, int y, int z) {
         if ((x+y<z) || (y+z<x) || (z+x<y)) {
             return "not a triangle";
@@ -37,7 +38,8 @@ public class work1 { //задание 1
         }
     }
 
-    //задание 5(тернарный оператор или условный оператор)
+    //задание 5
+    // (тернарный оператор или условный оператор, 1?2:3 -if 1==true, то 2, else 3)
     public static int ternaryEvaluation (int a, int b) {
         int x;
         x = a > b ? a : b;{
@@ -45,7 +47,7 @@ public class work1 { //задание 1
         }
     }
 
-    //задание 6(разобраться с округлением)
+    //задание 6(разобраться с округлением в меньшую сторону)
     public static float howManyItems (float n,float w,float h) {
         return (n/(w*h*2));
     }
@@ -59,7 +61,7 @@ public class work1 { //задание 1
         return n;
     }
 
-    //задание 8(наибольший общий делитель?)
+    //задание 8(наибольший общий делитель?)(a != b - равны или нет значения) 48 18
     public static int gcd (int a, int b) {
         while (a != b) {
             if (a > b) {
@@ -80,7 +82,7 @@ public class work1 { //задание 1
     //задание 10(округление!!!!)(1 стол 2 студента, сколько не хватит)
     public static float tables (int x, int y) {
         if (x/2>y){
-            return (y - (x/2))*(-1);
+            return ((x/2) - y);
         } else {
             return 0;
         }

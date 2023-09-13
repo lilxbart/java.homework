@@ -1,15 +1,46 @@
 public class work1 {
     public static void main(String[] args) {
         System.out.println(convert (5));
+        System.out.println(convert (3));
+        System.out.println(convert (8));
+
+        System.out.println(fitCalc (15, 1));
         System.out.println(fitCalc (24, 2));
+        System.out.println(fitCalc (41, 3));
+
+        System.out.println(containers (2, 4, 2));
         System.out.println(containers (5, 0, 2));
+        System.out.println(containers (4, 1, 4));
+
+        System.out.println(triangleType (5, 5, 5));
+        System.out.println(triangleType (5, 4, 5));
+        System.out.println(triangleType (3, 4, 5));
         System.out.println(triangleType (5, 1, 1));
+
+        System.out.println(ternaryEvaluation (8, 4));
         System.out.println(ternaryEvaluation (1, 11));
+        System.out.println(ternaryEvaluation (5, 9));
+
+        System.out.println(howManyItems (22, 1.4, 2));
+        System.out.println(howManyItems (100, 1.8, 1.9));
         System.out.println(howManyItems (100, 2, 2));
+
+        System.out.println(factorial (3));
         System.out.println(factorial (5));
+        System.out.println(factorial (7));
+
         System.out.println(gcd (48, 18));
+        System.out.println(gcd (52, 8));
+        System.out.println(gcd (259, 28));
+
         System.out.println(ticketSaler (70, 1500));
+        System.out.println(ticketSaler (24, 950));
+        System.out.println(ticketSaler (53, 1250));
+
+        System.out.println(tables (5, 2));
+        System.out.println(tables (31, 20));
         System.out.println(tables (123, 58));
+
     }
     //задание 1
     public static float convert (int x){
@@ -48,9 +79,9 @@ public class work1 {
         }
     }
 
-    //задание 6(разобраться с округлением в меньшую сторону)
-    public static float howManyItems (float n,float w,float h) {
-        return (n/(w*h*2));
+    //задание 6(разобраться с округлением в меньшую сторону!!!)
+    public static double howManyItems (double n,double w,double h) {
+        return Math.floor(n/(w*h*2));
     }
 
     //задание 7(факториал 5! = 1*2*3*4*5)
@@ -62,7 +93,7 @@ public class work1 {
         return n;
     }
 
-    //задание 8(наибольший общий делитель?)(a != b - равны или нет значения) 48 18
+    //задание 8(наибольший общий делитель)(a != b - равны или нет значения) 48 18
     public static int gcd (int a, int b) {
         while (a != b) {
             if (a > b) {
@@ -81,7 +112,11 @@ public class work1 {
 
 
     //задание 10(округление!!!!)(1 стол 2 студента, сколько не хватит)
-    public static float tables (int x, int y) {
-        return Math.max(0, ((1+x)/2 - y));
+    public static double tables (double x, double y) {
+        if (x / 2 > y) {
+            return Math.ceil((x / 2) - y);
+        } else {
+            return 0;
+        }
     }
 }

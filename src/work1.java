@@ -1,4 +1,4 @@
-public class work1 { //задание 1
+public class work1 {
     public static void main(String[] args) {
         System.out.println(convert (5));
         System.out.println(fitCalc (24, 2));
@@ -9,8 +9,9 @@ public class work1 { //задание 1
         System.out.println(factorial (5));
         System.out.println(gcd (48, 18));
         System.out.println(ticketSaler (70, 1500));
-        System.out.println(tables (162, 70));
+        System.out.println(tables (123, 58));
     }
+    //задание 1
     public static float convert (int x){
         return x * 3.785f;
     }
@@ -81,10 +82,6 @@ public class work1 { //задание 1
 
     //задание 10(округление!!!!)(1 стол 2 студента, сколько не хватит)
     public static float tables (int x, int y) {
-        if (x/2>y){
-            return ((x/2) - y);
-        } else {
-            return 0;
-        }
+        return Math.max(0, ((1+x)/2 - y));
     }
 }

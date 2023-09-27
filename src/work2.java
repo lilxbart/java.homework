@@ -132,10 +132,9 @@ public class work2 {
 
     //задание 9 (которая находит слово "help". Ответьте "Вызов сотрудника", если слово найдено, в противном случае – "Продолжайте ожидание")
     public static String botHelper(String str) {
-        str = str.toLowerCase();
-        str = str.replaceAll("[,.!?]", " "); // Заменяем знаки препинания на пробелы
-        String[] words = str.split("\\s+"); // Разделяем предложение на слова по пробелам
-
+        str = str.toLowerCase();//в строчную
+        str = str.replaceAll("[,.!?]", " "); //препинания на пробелы
+        String[] words = str.split("\\s+"); //pазделение
         for (String word : words) {
             if ( word.equals("help")) {
                 return "Calling for a staff member";

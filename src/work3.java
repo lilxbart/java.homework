@@ -141,7 +141,6 @@ public class work3 {
             vowelCount.put(letter, vowelCount.get(letter) + 1);
              }
             }
-
             char mostCommonVowel = ' ';
             int maxCount = 0;
 

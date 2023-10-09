@@ -71,6 +71,7 @@ public class work3 {
         return kubik[0] <= otverstie[0] && kubik[1] <= otverstie[1];
     }
 
+
     //задание 4
     public static boolean numCheck(int x) {
 

@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Arrays;
+import java.util.*;
 
 
 public class work3 {
@@ -27,6 +25,12 @@ public class work3 {
                 {"Banana", "Shop2", "Shop3", "Shop4"},
                 {"Orange", "Shop1", "Shop3", "Shop4"},
                 {"Pear", "Shop2", "Shop4"}})));
+        System.out.println(Arrays.toString(salesData(new String[][]{
+                {"Fridge", "Shop2", "Shop3"},
+                {"Microwave", "Shop1", "Shop2", "Shop3", "Shop4"},
+                {"Laptop", "Shop3", "Shop4"},
+                {"Phone", "Shop1", "Shop2", "Shop3", "Shop4"}})));
+
 
         System.out.println("задание7:" + validSplit("apple eagle egg goat"));
         System.out.println(validSplit("cat dog goose fish"));
@@ -45,6 +49,12 @@ public class work3 {
                 {48, 12, 60, 32, 14},
                 {91, 47, 16, 65, 217},
                 {5, 73, 0, 4, 21}})));
+        System.out.println(Arrays.deepToString(dataScience(new int[][]{
+                        {1, 2, 3, 4, 5},
+                        {6, 7, 8, 9, 10},
+                        {5, 5, 5, 5, 5},
+                        {7, 4, 3, 14, 2},
+                        {1, 0, 11, 10, 1}})));
     }
 
     //задание 1
@@ -56,23 +66,21 @@ public class work3 {
 
     //задание 2(разобраться с метасимволами)
     public static String stringTransform(String str) {
-        String result = str.replaceAll("(\\w)\\1", "Double$1");
-        return (result);
+        return (str.replaceAll("(\\w)\\1", "Double$1"));
     }
 
-    //задание 3 (разобрать)
+    //задание 3
     static boolean doesBlockkFit(int a, int b, int c, int w, int h) {
-        int[] kubik = {a, b, c};
+        int[] kub = {a, b, c};
         int[] otverstie = {w, h};
 
-        Arrays.sort(kubik);
+        Arrays.sort(kub);
         Arrays.sort(otverstie);
 
-        return kubik[0] <= otverstie[0] && kubik[1] <= otverstie[1];
+        return kub[0] <= otverstie[0] && kub[1] <= otverstie[1];
     }
 
-
-    //задание 4
+    //задание 4//чет нечет
     public static boolean numCheck(int x) {
 
         String numberString = Integer.toString(x);//перевод числа в строку
@@ -86,50 +94,57 @@ public class work3 {
         int sum = 0;
 
         for (int i = 0; i < intArray.length; i++) {//по индексам
-            int square = intArray[i] * intArray[i];
-            sum += square;
+            int sqr = intArray[i] * intArray[i];
+            sum += sqr;
         }
         return (x % 2 == 0 && sum % 2 == 0) || (x % 2 != 0 && sum % 2 != 0);//учитываем оба случая
     }
 
-    //задание 5
+    //задание 5 сколько корней
     public static int countRoots(int[] arr) {
 
         int a = arr[0];
         int b = arr[1];
         int c = arr[2];
+        int result = 0;
         int discriminant = b * b - 4 * a * c;
 
-        if (discriminant < 0) {// Нет целочисленных корней
+
+        if (discriminant < 0) {// Нет корней
             return 0;
-        } else if (discriminant == 0) {// Один целочисленный корень
-            return 1;
-        } else {// Два целочисленных корня
-            return 2;
+        } else if (discriminant == 0) {// Один корень
+            double x_1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+            result = (int)x_1 == x_1 ? 1 : 0;
+
+
+        } else {// Два корня
+            double x_1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+            double x_2  = (-b - Math.sqrt(discriminant)) / (2 * a);
+            result += (int)x_1 == x_1 ? 1 : 0;
+            result += (int)x_2 == x_2 ? 1 : 0;
         }
 
-
+    return result;
     }
 
     //задание 6 разобраться с двумерными массивами(!)
-    public static String[] salesData(String[][] data) {
-        int maxLen = 0;
-        for (String[] row : data) {
-            if (row.length > maxLen) {
-                maxLen = row.length;
+    public static String[] salesData(String[][] arr) {
+        int x = 0;
+        for (String[] row : arr) {
+            if (row.length > x) {
+                x = row.length;
             }
         }
-        int count = 0;
-        String[] result = new String[data.length];
-        for (String[] row : data) {
-            if (row.length == maxLen) {
-                result[count] = row[0];
-                count++;
+        int y = 0;//местро в результате
+        String[] result = new String[arr.length];
+        for (String[] row : arr) {
+            if (row.length == x) {
+                result[y] = row[0];
+                y++;
             }
         }
-        return Arrays.copyOf(result, count);
+        return Arrays.copyOf(result, y);//ответ в виде массива
     }
-
 
     //задание 7
     public static boolean validSplit(String str) {
@@ -146,67 +161,70 @@ public class work3 {
         return true;
     }
 
-    //задание 8 переделать(можно сделать проще взяв другой флаг)
-
+    //задание 8 переделать(можно сделать взяв другой флаг)
     public static boolean waveForm(int[] arr) {
+        for (int i = 0; i < arr.length - 2; i++) {
+            int first = arr[i];
+            int second = arr[i + 1];
+            int third = arr[i + 2];
 
-        if (arr.length < 3)
-            return false;
-
-        boolean increasing = true;
-        for (int i = 0; i < arr.length - 1; i++) {
-            if ((increasing && arr[i] <= arr[i + 1]) || (!increasing && arr[i] >= arr[i + 1])) {
+            if ((second - first) * (third - second) >= 0) {
                 return false;
+
+                //5 3 9 2 4
+
             }
-            increasing = !increasing;
         }
+
         return true;
     }
 
-    //задание 9 переделать(тоже можно переделать)
-    public static char commonVovel(String str) {
-        String sentence = str.toLowerCase();
+
+
+    //задание 9 переделать
+    public static List<Character> commonVovel(String str) {
+        str = str.toLowerCase();
         Map<Character, Integer> vowelCount = new HashMap<>();
-        String vowels = "aeiou"; // Гласные буквы
+        String vowels = "aeiou"; // доп строка
 
         for (char vowel : vowels.toCharArray()) {
-            vowelCount.put(vowel, 0);
+            vowelCount.put(vowel, 0);//запись в словать каждой гласной со значением 0
         }
 
-        for (char letter : sentence.toCharArray()) {
+        for (char letter : str.toCharArray()) {
             if (vowelCount.containsKey(letter)) {
                 vowelCount.put(letter, vowelCount.get(letter) + 1);
             }
         }
-        char mostCommonVowel = ' ';
-        int maxCount = 0;
+        int max = 0;
+        List<Character> most = new ArrayList<>();
 
         for (char vowel : vowels.toCharArray()) {
-            int count = vowelCount.get(vowel);
-            if (count > maxCount) {
-                maxCount = count;
-                mostCommonVowel = vowel;
+            int count = vowelCount.get(vowel); // значение объекта по ключу
+            if (count > max) {
+                max = count;
+                most.clear();
+                most.add(vowel);
+            } else if (count == max) {
+                most.add(vowel);
             }
         }
-
-        return mostCommonVowel;
+        return most;
     }
 
     //задание 10
     public static int[][] dataScience(int[][] arrays) {
         int n = arrays.length;
-        for (int i = 0; i < n; i++) {
-            int total = 0;
-            for (int k = 0; k < n; k++) {
-                if (k != i) {
-                    total += arrays[k][i];
+        for (int i = 0; i < n; i++) {//перебор индексов строк
+            int x = 0;
+            for (int k = 0; k < n; k++) {//перебор индексов столбцов
+                if (k != i) {//диаг не учитываем
+                    x += arrays[k][i];
                 }
             }
-            arrays[i][i] = total / (n - 1);
+            arrays[i][i] = x / (n - 1);
         }
         return arrays;
     }
-
-
 }
 

@@ -278,5 +278,4 @@ public class work4 {
 
         return Integer.parseInt(new String(num1Digits));
     }
-
 }

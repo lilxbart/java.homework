@@ -1,65 +1,57 @@
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class work4 {
     public static void main(String[] args) {
-        // Задача 1: Удаление повторяющихся символов из строки
         System.out.println("задание1: " + nonRepeatable("abracadabra"));
         System.out.println(nonRepeatable("paparazzi"));
 
-        // Задача 2: Генерация комбинаций скобок
         System.out.println("задание2: " + generateBrackets(1));
         System.out.println(generateBrackets(2));
         System.out.println(generateBrackets(3));
 
-        // Задача 3: Генерация бинарных комбинаций без соседствующих нулей
         System.out.println("задание3: " + binarySystem(3));
         System.out.println(binarySystem(4));
 
-        // Задача 4: Поиск самой длинной последовательности
         System.out.println("задание4: " + alphabeticRow("abcdjuwx"));
         System.out.println(alphabeticRow("klmabzyxw"));
 
-        // Задача 5: Подсчет и сортировка символов(!)
         System.out.println("задание5: " + countAndSortCharacters("aaabbcdd"));
         System.out.println(countAndSortCharacters("vvvvaajaaaaa"));
 
-        // Задача 6: Преобразование строки в число
         System.out.println("задание6: " + convertToNum("eight"));
         System.out.println(convertToNum("five hundred sixty seven"));
         System.out.println(convertToNum("thirty one"));
 
-        // Задача 7: Поиск подстроки максимальной длины с уникальными элементами
-        System.out.println("задание7: " + uniqueSubstring("123412324"));
+         System.out.println("задание7: " + uniqueSubstring("123412324"));
         System.out.println(uniqueSubstring("111111"));
         System.out.println(uniqueSubstring("77897898"));
 
-        // Задача 8: Поиск наименьшего матричного пути
         System.out.println("задание8: " + shortestWay(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}));
         System.out.println(shortestWay(new int[][]{{2, 7, 3}, {1, 4, 8}, {4, 5, 9}}));
 
-        // Задача 9: Создание новой строки на основе расположения чисел
-        System.out.println("задание9: " + numericOrder("t3o the5m 1One all6 r4ule ri2ng"));
+         System.out.println("задание9: " + numericOrder("t3o the5m 1One all6 r4ule ri2ng"));
         System.out.println(numericOrder("re6sponsibility Wit1h gr5eat power3 4comes g2reat"));
 
-        // Задача 10: Максимизация второго числа(!!!!)
         System.out.println("задание10: " + switchNums(519, 723));
         System.out.println(switchNums(491, 3912));
         System.out.println(switchNums(6274, 71259));
-
     }
 
-    // Задача 1: Удаление повторяющихся символов из строки
+    // Задание 1 Удаление повтора
     public static String nonRepeatable(String str) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if (result.indexOf(String.valueOf(c)) == -1) {
+            if (result.indexOf(String.valueOf(c)) == -1) {//ищем индекс
                 result.append(c);
             }
         }
         return result.toString();
     }
 
-    // Задача 2: Генерация комбинаций скобок
+    // Задание 2 комбо строк
     public static List<String> generateBrackets(int n) {
         List<String> result = new ArrayList<>();
         generateBracketsHelper(n, n, "", result);
@@ -79,7 +71,7 @@ public class work4 {
         }
     }
 
-    // Задача 3: Генерация бинарных комбинаций без соседствующих нулей
+    // Задание 3 сочетание без сосед. 0
     public static List<String> binarySystem(int n) {
         List<String> result = new ArrayList<>();
         generateBinaryCombinations(n, "", result);
@@ -91,20 +83,20 @@ public class work4 {
             result.add(current);
             return;
         }
-        if (current.length() == 0 || current.charAt(current.length() - 1) == '1') {
+        if (current.length() == 0 || current.charAt(current.length() - 1) == '1') {//послед симв=1
             generateBinaryCombinations(n, current + "0", result);
         }
         generateBinaryCombinations(n, current + "1", result);
     }
 
-    // Задача 4: Поиск самой длинной последовательности
+    // Задание 4 послед
     public static String alphabeticRow(String str) {
-        int maxLen = 0;
-        String maxRow = "";
-        String currentRow = String.valueOf(str.charAt(0));
+        int maxLen = 0;//длина
+        String maxRow = "";//значение
+        String currentRow = String.valueOf(str.charAt(0));//первая буквы
 
         for (int i = 1; i < str.length(); i++) {
-            if (str.charAt(i) - str.charAt(i - 1) == 1 || str.charAt(i) - str.charAt(i - 1) == -1) {
+            if (str.charAt(i) - str.charAt(i - 1) == 1 || str.charAt(i) - str.charAt(i - 1) == -1) {//вычитание кодов символов
                 currentRow += str.charAt(i);
             } else {
                 if (currentRow.length() > maxLen) {
@@ -120,27 +112,46 @@ public class work4 {
         return maxRow;
     }
 
-    // Задача 5: Подсчет и сортировка символов
+    // Задание 5 Подсчет и сортировка символов!!!!!!!!!!!
     public static String countAndSortCharacters(String str) {
-        Map<Character, Integer> charCount = new HashMap<>();
-        for (char c : str.toCharArray()) {
-            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+        StringBuilder comp = new StringBuilder();//сжатая строка
+        int count = 1;//колво повторений
+
+        for (int i = 1; i < str.length(); i++) {
+            if (str.charAt(i) == str.charAt(i - 1)) {
+                count++;
+            } else {
+                comp.append(str.charAt(i - 1));
+                comp.append(count);
+                count = 1;
+            }
         }
+        comp.append(str.charAt(str.length() - 1));
+        comp.append(count);//последний символ
+
+        List<String> blocks = new ArrayList<>();//блоки буква+цифра
+        Matcher matcher = Pattern.compile("[a-zA-Z]\\d+").matcher(comp.toString());
+        while (matcher.find()) {
+            blocks.add(matcher.group());//добавление регулятого выраж
+        }
+
+        blocks.sort((o1, o2) -> {// Сортировка с лямбдой
+            int num1 = Integer.parseInt(o1.substring(1));//извлекаем число(0,1)
+            int num2 = Integer.parseInt(o2.substring(1));
+            return Integer.compare(num1, num2);//-if num2>.. +if num1>
+        });
 
         StringBuilder result = new StringBuilder();
-        char[] sortedChars = str.toCharArray();
-        Arrays.sort(sortedChars);
-
-        for (char c : sortedChars) {
-            result.append(c);
-            result.append(charCount.get(c));
+        for (String block : blocks) {
+            result.append(block);
         }
+
         return result.toString();
     }
-    // Задача 6: Преобразование строки в число
+    // Задание 6 из стр в число
     public static int convertToNum(String str) {
-        // Создаем словарь чисел
-        Map<String, Integer> numDict = new HashMap<>();
+
+        Map<String, Integer> numDict = new HashMap<>();//словарь чисел
 
         numDict.put("zero", 0);
         numDict.put("one", 1);
@@ -190,54 +201,49 @@ public class work4 {
         return result;
     }
 
-    // Задача 7: Поиск подстроки максимальной длины с уникальными элементами
-    public static String uniqueSubstring(String digits) {
-        Set<Character> uniqueChars = new HashSet<>();
-        String maxSubstring = "";
-        String currentSubstring = "";
+    // Задание 7 Поиск подстроки максимальной длины с уникальными элементами
+    public static String uniqueSubstring(String str) {
+        Set<Character> unique = new HashSet<>();
+        String max = "";
+        String current = "";
 
-        for (char c : digits.toCharArray()) {
-            if (uniqueChars.contains(c)) {
-                int startIndex = currentSubstring.indexOf(c);
-                currentSubstring = currentSubstring.substring(startIndex + 1);
+        for (char c : str.toCharArray()) {
+            if (unique.contains(c)) {//если симв уже есть удаляем все до его первого появления
+                int startIndex = current.indexOf(c);
+                current = current.substring(startIndex + 1);
             }
-            uniqueChars.add(c);
-            currentSubstring += c;
-            if (currentSubstring.length() > maxSubstring.length()) {
-                maxSubstring = currentSubstring;
+            unique.add(c);
+            current += c;
+            if (current.length() > max.length()) {
+                max = current;
             }
         }
-
-        return maxSubstring;
+        return max;
     }
 
-    // Задача 8: Поиск наименьшего матричного пути
-    public static int shortestWay(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        int[][] dp = new int[m][n];
+    // Задание 8 наименьший путь
+    public static int shortestWay(int[][] arr) {
+        int m = arr.length;//строки
+        int n = arr[0].length;//столбцы
+        int[][] x = new int[m][n];//новый масс, хран.пути
 
-        dp[0][0] = grid[0][0];
+        x[0][0] = arr[0][0];//первые ячейки совпадают
 
-        // Заполним первую строку и первый столбец
-        for (int i = 1; i < m; i++) {
-            dp[i][0] = dp[i - 1][0] + grid[i][0];
+        for (int i = 1; i < m; i++) {// строки(суммы если бы двигались)
+            x[i][0] = x[i - 1][0] + arr[i][0];
         }
-        for (int j = 1; j < n; j++) {
-            dp[0][j] = dp[0][j - 1] + grid[0][j];
+        for (int j = 1; j < n; j++) {// столбца
+            x[0][j] = x[0][j - 1] + arr[0][j];
         }
-
-        // Заполним остальные ячейки
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+        for (int i = 1; i < m; i++) {// стр
+            for (int j = 1; j < n; j++) {//столб
+                x[i][j] = Math.min(x[i - 1][j], x[i][j - 1]) + arr[i][j];
             }
         }
-
-        return dp[m - 1][n - 1];
+        return x[m - 1][n - 1];//- тк с 0
     }
 
-    // Задача 9: Создание новой строки на основе расположения чисел
+    // Задание 9 Создание новой строки на основе расположения чисел
     public static String numericOrder(String str) {
         String[] words = str.split(" ");
         Map<Integer, String> wordMap = new HashMap<>();
@@ -246,36 +252,33 @@ public class work4 {
             int order = Integer.parseInt(word.replaceAll("[^0-9]", ""));
             wordMap.put(order, word);
         }
-
         StringBuilder result = new StringBuilder();
         for (int i = 1; i <= words.length; i++) {
             result.append(wordMap.get(i));
-            if (i < words.length) {
                 result.append(" ");
             }
-        }
-        String finalResult = result.toString().replaceAll("\\d", "");
 
+        String finalResult = result.toString().replaceAll("\\d", "");
         return finalResult;
     }
 
-    // Задача 10: Максимизация второго числа(логика понятна реализация нет)
+    // Задача 10 макс второе число за счет первого(ура)
     public static int switchNums(int num1, int num2) {
         char[] num1Digits = Integer.toString(num1).toCharArray();
         char[] num2Digits = Integer.toString(num2).toCharArray();
 
         Arrays.sort(num1Digits);
-        Arrays.sort(num2Digits);
 
-        int j = num2Digits.length - 1;
 
-        for (int i = num1Digits.length - 1; i >= 0 && j >= 0; i--) {
-            if (num1Digits[i] < num2Digits[j]) {
-                num1Digits[i] = num2Digits[j];
-                j--;
+        for (int j = 0; j < num2Digits.length; j++){
+            for (int i = num1Digits.length - 1; i >= 0; i--) {
+                if (num1Digits[i] > num2Digits[j]) {
+                    num2Digits[j] = num1Digits[i];
+                    num1Digits[i] = 0;
+                }
             }
         }
 
-        return Integer.parseInt(new String(num1Digits));
+        return Integer.parseInt(new String(num2Digits));
     }
 }

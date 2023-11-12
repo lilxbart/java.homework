@@ -14,10 +14,10 @@ public class work4 {
         System.out.println("задание3: " + binarySystem(3));
         System.out.println(binarySystem(4));
 
-        System.out.println("задание4: " + alphabeticRow("abcdjuwx"));
+        System.out.println("задание4: " + alphabeticRow("ababa")); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         System.out.println(alphabeticRow("klmabzyxw"));
 
-        System.out.println("задание5: " + countAndSortCharacters("aaabbcdd"));
+        System.out.println("задание5: " + countAndSortCharacters("aaaa"));
         System.out.println(countAndSortCharacters("vvvvaajaaaaa"));
 
         System.out.println("задание6: " + convertToNum("eight"));
@@ -39,16 +39,21 @@ public class work4 {
         System.out.println(switchNums(6274, 71259));
     }
 
-    // Задание 1 Удаление повтора
+    // Задание 1 Удаление повтора !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static String nonRepeatable(String str) {
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (result.indexOf(String.valueOf(c)) == -1) {//ищем индекс
-                result.append(c);
-            }
+        return nonRepeatable(str, new HashSet<>());
+    }
+    private static String nonRepeatable(String str, HashSet<Character> set) {
+        if (str.isEmpty()) {
+            return "";
         }
-        return result.toString();
+        char firstChar = str.charAt(0);
+        if (set.contains(firstChar)) {
+            return nonRepeatable(str.substring(1), set);
+        } else {
+            set.add(firstChar);
+            return firstChar + nonRepeatable(str.substring(1), set);
+        }
     }
 
     // Задание 2 комбо строк
@@ -89,30 +94,50 @@ public class work4 {
         generateBinaryCombinations(n, current + "1", result);
     }
 
-    // Задание 4 послед
-    public static String alphabeticRow(String str) {
-        int maxLen = 0;//длина
-        String maxRow = "";//значение
-        String currentRow = String.valueOf(str.charAt(0));//первая буквы
+    // Задание 4 послед букв
+    public static String alphabeticRow(String s) {
+        String maxRow = "";
+        int maxLen = 0;
 
-        for (int i = 1; i < str.length(); i++) {
-            if (str.charAt(i) - str.charAt(i - 1) == 1 || str.charAt(i) - str.charAt(i - 1) == -1) {//вычитание кодов символов
-                currentRow += str.charAt(i);
-            } else {
-                if (currentRow.length() > maxLen) {
-                    maxLen = currentRow.length();
-                    maxRow = currentRow;
-                }
-                currentRow = String.valueOf(str.charAt(i));
+        // Поиск последовательности, идущей в прямом порядке
+        for (int i = 0; i < s.length(); i++) {
+            StringBuilder current = new StringBuilder();
+            current.append(s.charAt(i));
+
+            // Добавление следующих символов, если они идут в алфавитном порядке
+            while (i < s.length() - 1 && s.charAt(i) + 1 == s.charAt(i + 1)) {
+                current.append(s.charAt(i + 1));
+                i++;
+            }
+
+            // Обновление самой длинной последовательности, если текущая длиннее
+            if (current.length() > maxLen) {
+                maxLen = current.length();
+                maxRow = current.toString();
             }
         }
-        if (currentRow.length() > maxLen) {
-            maxRow = currentRow;
+
+        // Поиск последовательности, идущей в обратном порядке
+        for (int i = 0; i < s.length(); i++) {
+            StringBuilder currentSequence = new StringBuilder();
+            currentSequence.append(s.charAt(i));
+
+            // Добавление следующих символов, если они идут в обратном алфавитном порядке
+            while (i < s.length() - 1 && s.charAt(i) == s.charAt(i + 1) + 1) {
+                currentSequence.append(s.charAt(i + 1));
+                i++;
+            }
+
+            // Обновление самой длинной последовательности, если текущая длиннее
+            if (currentSequence.length() > maxLen) {
+                maxLen = currentSequence.length();
+                maxRow = currentSequence.toString();
+            }
         }
+
         return maxRow;
     }
-
-    // Задание 5 Подсчет и сортировка символов!!!!!!!!!!!
+    // Задание 5 сортировка символов
     public static String countAndSortCharacters(String str) {
         StringBuilder comp = new StringBuilder();//сжатая строка
         int count = 1;//колво повторений
@@ -207,7 +232,7 @@ public class work4 {
         String max = "";
         String current = "";
 
-        for (char c : str.toCharArray()) {
+        for (char c : str.toCharArray()) { //123789
             if (unique.contains(c)) {//если симв уже есть удаляем все до его первого появления
                 int startIndex = current.indexOf(c);
                 current = current.substring(startIndex + 1);
@@ -243,7 +268,7 @@ public class work4 {
         return x[m - 1][n - 1];//- тк с 0
     }
 
-    // Задание 9 Создание новой строки на основе расположения чисел
+    // Задание 9 правильный порядок слов в предложении
     public static String numericOrder(String str) {
         String[] words = str.split(" ");
         Map<Integer, String> wordMap = new HashMap<>();
@@ -258,8 +283,8 @@ public class work4 {
                 result.append(" ");
             }
 
-        String finalResult = result.toString().replaceAll("\\d", "");
-        return finalResult;
+        String finalResult = result.toString().trim().replaceAll("\\d", "");
+        return finalResult; // удаление лишних пробелов
     }
 
     // Задача 10 макс второе число за счет первого(ура)
@@ -269,7 +294,6 @@ public class work4 {
 
         Arrays.sort(num1Digits);
 
-
         for (int j = 0; j < num2Digits.length; j++){
             for (int i = num1Digits.length - 1; i >= 0; i--) {
                 if (num1Digits[i] > num2Digits[j]) {
@@ -278,7 +302,6 @@ public class work4 {
                 }
             }
         }
-
         return Integer.parseInt(new String(num2Digits));
     }
 }

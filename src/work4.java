@@ -39,7 +39,7 @@ public class work4 {
         System.out.println(switchNums(6274, 71259));
     }
 
-    // Задание 1 Удаление повтора !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Задание 1 Удаление повтора
     public static String nonRepeatable(String str) {
         return nonRepeatable(str, new HashSet<>());
     }
@@ -94,7 +94,7 @@ public class work4 {
         generateBinaryCombinations(n, current + "1", result);
     }
 
-    // Задание 4 послед букв
+    // Задание 4 послед букв !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static String alphabeticRow(String s) {
         String maxRow = "";
         int maxLen = 0;

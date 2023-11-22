@@ -95,48 +95,38 @@ public class work4 {
     }
 
     // Задание 4 послед букв !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public static String alphabeticRow(String s) {
-        String maxRow = "";
-        int maxLen = 0;
+    public static String alphabeticRow(String str) {
+        String maxRow = "";//последовательность
+        int maxLen = 0;//длина
 
-        // Поиск последовательности, идущей в прямом порядке
-        for (int i = 0; i < s.length(); i++) {
-            StringBuilder current = new StringBuilder();
-            current.append(s.charAt(i));
-
-            // Добавление следующих символов, если они идут в алфавитном порядке
-            while (i < s.length() - 1 && s.charAt(i) + 1 == s.charAt(i + 1)) {
-                current.append(s.charAt(i + 1));
+        for (int i = 0; i < str.length(); i++) {//в прямом
+            StringBuilder current01 = new StringBuilder();
+            current01.append(str.charAt(i));
+            while (i < str.length() - 1 && str.charAt(i) + 1 == str.charAt(i + 1)) {//в алфавитном
+                current01.append(str.charAt(i + 1));
                 i++;
             }
-
-            // Обновление самой длинной последовательности, если текущая длиннее
-            if (current.length() > maxLen) {
-                maxLen = current.length();
-                maxRow = current.toString();
+            if (current01.length() > maxLen) {//обновление
+                maxLen = current01.length();
+                maxRow = current01.toString();
             }
         }
 
-        // Поиск последовательности, идущей в обратном порядке
-        for (int i = 0; i < s.length(); i++) {
-            StringBuilder currentSequence = new StringBuilder();
-            currentSequence.append(s.charAt(i));
-
-            // Добавление следующих символов, если они идут в обратном алфавитном порядке
-            while (i < s.length() - 1 && s.charAt(i) == s.charAt(i + 1) + 1) {
-                currentSequence.append(s.charAt(i + 1));
+        for (int i = 0; i < str.length(); i++) {//в обратном
+            StringBuilder current10 = new StringBuilder();
+            current10.append(str.charAt(i));
+            while (i < str.length() - 1 && str.charAt(i) == str.charAt(i + 1) + 1) {//в обратном
+                current10.append(str.charAt(i + 1));
                 i++;
             }
-
-            // Обновление самой длинной последовательности, если текущая длиннее
-            if (currentSequence.length() > maxLen) {
-                maxLen = currentSequence.length();
-                maxRow = currentSequence.toString();
+            if (current10.length() > maxLen) {//обновление
+                maxLen = current10.length();
+                maxRow = current10.toString();
             }
         }
-
         return maxRow;
     }
+
     // Задание 5 сортировка символов
     public static String countAndSortCharacters(String str) {
         StringBuilder comp = new StringBuilder();//сжатая строка

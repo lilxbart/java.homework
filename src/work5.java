@@ -15,6 +15,10 @@ public class work5 {
             System.out.println(sameLetterPattern("FFGG", "CDCD"));
             System.out.println(sameLetterPattern("FFFF", "ABCD"));
 
+            System.out.println("задание2: " + spiderVsFly("H3", "E2"));
+            System.out.println(spiderVsFly("A4", "B2"));
+            System.out.println(spiderVsFly("A4", "C2"));
+
             System.out.println("задание3: " + digitsCount(4666)); // 4
             System.out.println(digitsCount(544)); // 3
             System.out.println(digitsCount(121317)); // 6
@@ -35,8 +39,8 @@ public class work5 {
             System.out.println(takeDownAverage(new String[]{"10%"})); // "0%"
             System.out.println(takeDownAverage(new String[]{"53%", "79%"})); // "51%"
 
-            System.out.println("задание7: " + caesarCipher("encode", "HELLO WORLD", 3)); // KHOOR ZRUOG
-            System.out.println(caesarCipher("decode", "KHOOR ZRUOG", 3)); // HELLO WORLD
+            System.out.println("задание7: " + caesarCipher(new String[] {"encode"}, "HELLO WORLD", 3));
+            System.out.println(caesarCipher(new String[] {"encode"}, "almost last task!", 4));
 
             System.out.println("задание8: " + setSetup(5, 3)); // 60
             System.out.println(setSetup(7, 3)); // 210
@@ -57,44 +61,104 @@ public class work5 {
 
 
 
-    //задание1
+        //задание1(один ли шаблон)
         public static boolean sameLetterPattern(String str1, String str2) {
-            if (str1.length() != str2.length()) {
+            if (str1.length() != str2.length()) {//размер
                 return false;
             }
 
             for (int i = 1; i < str1.length(); i++) {
                 if (str1.charAt(i) - str1.charAt(i - 1) != str2.charAt(i) - str2.charAt(i - 1)) {
-                    return false;
+                    return false;//проверка самих символов
                 }
             }
             return true;
         }
 
         //задание2
+        public static String spiderVsFly(String Spider, String Fly){
+            int spider = Character.getNumericValue(Spider.charAt(1));
+            int fly = Character.getNumericValue(Fly.charAt(1));
 
+            int circleDif = Math.abs(Spider.charAt(0) - Fly.charAt(0));
 
-        //задание3
-        public static int digitsCount(long n) {
-            return n < 10 ? 1 : 1 + digitsCount(n / 10);
-    }
+            int walk = 1;
 
-        //задание4
-        public static int totalPoints(String[] words, String scrambled) {
-            int score = 0;
-            Map<Character, Integer> scrambledMap = createCharMap(scrambled);
+            double minLen = 100;
+            int min_route = 0;
 
-            for (String word : words) {
-                if (isValidWord(word, scrambledMap)) {
-                    score += word.length() == 3 ? 1 : word.length() == 4 ? 2 : word.length() == 5 ? 3 : 54;
+            StringBuilder path = new StringBuilder();
+
+            int spiderMove = min_route > spider ? 1 : -1;
+
+            int flyMove = min_route > fly ? -1 : 1;
+
+            if (circleDif > 8 - circleDif){
+                circleDif = 8 - circleDif;
+                walk = -1;
+            }
+
+            for (int i = 0; i < 5; i++){
+                double len = (Math.abs(spider - i) + Math.abs(fly - i)
+                );
+
+                len += circleDif * Math.sqrt(i*i*2 - 2*i*i*Math.cos(Math.toRadians(45)));
+
+                if (len < minLen) {
+                    minLen = len;
+                    min_route = i;
                 }
             }
 
-            return score;
+            for (int i = spider; i != min_route + spiderMove; i += spiderMove){
+                if (i == 0){
+                    path.append('A');
+                }
+                else {
+                    path.append(Spider.charAt(0));
+                }
+
+                path.append(i).append('-');
+            }
+
+            if (min_route != 0){
+                for (int i = 0; i < circleDif; i++){
+                    path.append(Character.toString(path.charAt(path.length() - 3) + walk))
+                            .append(min_route).append('-');
+                }
+            }
+
+            for (int i = min_route + flyMove; i != fly + flyMove; i += flyMove){
+
+                path.append(Fly.charAt(0));
+                path.append(i).append('-');
+            }
+
+            path.deleteCharAt(path.length()-1);
+
+            return path.toString();
+        }
+
+        //задание3(колво цифр)
+        public static int digitsCount(long n) {
+            return n < 10 ? 1 : 1 + digitsCount(n / 10);//через оператор
+    }
+
+        //задание4(найти слова за баллы)
+        public static int totalPoints(String[] words, String scrambled) {
+            int result = 0;
+            Map<Character, Integer> scrambledMap = createCharMap(scrambled);//словарь символов из ключевого слова
+
+            for (String word : words) {
+                if (isValidWord(word, scrambledMap)) {
+                    result += word.length() == 3 ? 1 : word.length() == 4 ? 2 : word.length() == 5 ? 3 : 54;
+                }
+            }
+            return result;
         }
 
     private static boolean isValidWord(String word, Map<Character, Integer> scrambledMap) {
-        Map<Character, Integer> wordMap = createCharMap(word);
+        Map<Character, Integer> wordMap = createCharMap(word);//словарь символов из слова
         for (char c : wordMap.keySet()) {
             if (!scrambledMap.containsKey(c) || wordMap.get(c) > scrambledMap.get(c)) {
                 return false;
@@ -111,54 +175,59 @@ public class work5 {
         return map;
     }
 
-        //задание5
+        //задание5(пара дающая 8)
         public static int[][] sumsUp(int[] arr) {
             List<int[]> pairs = new ArrayList<>();
             Set<Integer> set = new HashSet<>();
 
             for (int num : arr) {
-                if (set.contains(8 - num)) {
+                if (set.contains(8 - num)) {//есть ли "8 - 5 = 5 == 3,5"
                     pairs.add(new int[]{8 - num, num});
                 }
                 set.add(num);
+            }
+            for (int[] pair : pairs) {
+                Arrays.sort(pair);//сортировка внутри пар
             }
 
             return pairs.toArray(new int[pairs.size()][]);
         }
 
         //задание6
-        public static String takeDownAverage(String[] marks) {
-            int sum = 0;
-            for (String mark : marks) {
-                sum += Integer.parseInt(mark.replace("%", ""));
-            }
-
-            int average = sum / marks.length;
-            int newAverage = average - 5;
-            int yourScore = newAverage * (marks.length + 1) - sum;
-
-            return yourScore + "%";
+        public static String takeDownAverage(String[] percents) {
+            int avg = 0;
+            for (String s : percents)
+                avg += Integer.parseInt(s.substring(0, s.length() - 1));
+            return (avg / percents.length - percents.length*5 - 5) + "%";
         }
 
         //задание7
-        public static String caesarCipher(String mode, String message, int shift) {
+        public static String caesarCipher(String[] operation, String message, int shift) {
             StringBuilder result = new StringBuilder();
+            String mode = operation[0].toLowerCase();
+
             for (char character : message.toCharArray()) {
-                if (character >= 'A' && character <= 'Z') {
-                    int base = 'A';
-                    if (mode.equalsIgnoreCase("decode")) {
-                        shift = 26 - shift;
+                if (Character.isLetter(character)) { // Проверка, является ли символ буквой
+                    int base = Character.isUpperCase(character) ? 'A' : 'a';
+                    if (mode.equals("decode")) {
+                        shift = (shift % 26 + 26) % 26; // Учтем обратный сдвиг по модулю 26
+                        char shifted = (char) (((character - base - shift + 26) % 26) + base); // Декодирование
+                        result.append(shifted);
+                    } else {
+                        char shifted = (char) (((character - base + shift) % 26) + base); // Шифрование
+                        result.append(shifted);
                     }
-                    char shifted = (char) (((character - base + shift) % 26) + base);
-                    result.append(shifted);
                 } else {
-                    result.append(character);
+                    result.append(character); // Если символ не является буквой, добавляем его без изменений
                 }
             }
+
             return result.toString();
         }
 
-        //задание8
+
+
+    //задание8
         public static int setSetup(int n, int k) {
             return factorial(n) / factorial(n - k);
         }

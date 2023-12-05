@@ -53,110 +53,94 @@ public class work5 {
             System.out.println(isNew(30));
             System.out.println(isNew(321));
             System.out.println(isNew(123));
-
-
-
-
         }
-
-
 
         //задание1(один ли шаблон)
-        public static boolean sameLetterPattern(String str1, String str2) {
-            if (str1.length() != str2.length()) {//размер
-                return false;
-            }
-
-            for (int i = 1; i < str1.length(); i++) {
-                if (str1.charAt(i) - str1.charAt(i - 1) != str2.charAt(i) - str2.charAt(i - 1)) {
-                    return false;//проверка самих символов
-                }
-            }
-            return true;
+    public static boolean sameLetterPattern(String str1, String str2) {
+        if (str1.length() != str2.length()) {//размер
+            return false;
         }
+        for (int i = 1; i < str1.length(); i++) {
+            if (str1.charAt(i) - str1.charAt(i - 1) != str2.charAt(i) - str2.charAt(i - 1)) {
+            return false;
+            }
+        }
+        return true;
+    }
 
         //задание2
-        public static String spiderVsFly(String Spider, String Fly){
-            int spider = Character.getNumericValue(Spider.charAt(1));
-            int fly = Character.getNumericValue(Fly.charAt(1));
+    public static String spiderVsFly(String Spider, String Fly){
+        int spider = Character.getNumericValue(Spider.charAt(1));//круг
+        int fly = Character.getNumericValue(Fly.charAt(1));
+        int circle = Math.abs(Spider.charAt(0) - Fly.charAt(0));//какая часть круга
 
-            int circleDif = Math.abs(Spider.charAt(0) - Fly.charAt(0));
+        int walk = 1;
+        double minLen = 100;
+        int min_route = 0;
 
-            int walk = 1;
-
-            double minLen = 100;
-            int min_route = 0;
-
-            StringBuilder path = new StringBuilder();
-
-            int spiderMove = min_route > spider ? 1 : -1;
-
-            int flyMove = min_route > fly ? -1 : 1;
-
-            if (circleDif > 8 - circleDif){
-                circleDif = 8 - circleDif;
-                walk = -1;
-            }
-
-            for (int i = 0; i < 5; i++){
-                double len = (Math.abs(spider - i) + Math.abs(fly - i)
-                );
-
-                len += circleDif * Math.sqrt(i*i*2 - 2*i*i*Math.cos(Math.toRadians(45)));
-
-                if (len < minLen) {
-                    minLen = len;
-                    min_route = i;
-                }
-            }
-
-            for (int i = spider; i != min_route + spiderMove; i += spiderMove){
-                if (i == 0){
-                    path.append('A');
-                }
-                else {
-                    path.append(Spider.charAt(0));
-                }
-
-                path.append(i).append('-');
-            }
-
-            if (min_route != 0){
-                for (int i = 0; i < circleDif; i++){
-                    path.append(Character.toString(path.charAt(path.length() - 3) + walk))
-                            .append(min_route).append('-');
-                }
-            }
-
-            for (int i = min_route + flyMove; i != fly + flyMove; i += flyMove){
-
-                path.append(Fly.charAt(0));
-                path.append(i).append('-');
-            }
-
-            path.deleteCharAt(path.length()-1);
-
-            return path.toString();
+        if (circle > 8 - circle){
+            circle = 8 - circle;
+            walk = -1;
         }
 
+        for (int i = 0; i < 5; i++){//длина подходящей дуги
+            double len = (Math.abs(spider - i) + Math.abs(fly - i));
+            len += circle * Math.sqrt(2*i*i - 2*i*i*Math.cos(Math.toRadians(45)));
+            //дуга=корню из суммы квадратов радиусов-2*радиусов на косинус
+            if (len < minLen) {
+                minLen = len;
+                min_route = i;
+            }
+        }
+
+        int spiderMove = min_route > spider ? 1 : -1;//направление от ц или к
+        StringBuilder path = new StringBuilder();//для построения пути
+
+        //окружность, пока не= минимальный круг+движение к А или от,
+        for (int i = spider; i != min_route + spiderMove; i += spiderMove){
+            if (i == 0){//центр
+                path.append('A');
+            } else {
+                path.append(Spider.charAt(0));//текущая позиция
+            }
+            path.append(i).append('-');//+номер круга и разделитель
+        }
+
+        //по кругу если не через центр
+        if (min_route != 0){
+            for (int i = 0; i < circle; i++){//возвращаем по индексу,-3 тк ы4-,+walk определение сектора
+                path.append(Character.toString(path.charAt(path.length() - 3) + walk)).append(min_route).append('-');
+            }
+        }
+
+        //путь от min_круга к Fly(движение по радиане)
+        int flyMove = min_route > fly ? -1 : 1;
+        for (int i = min_route + flyMove; i != fly + flyMove; i += flyMove){
+            path.append(Fly.charAt(0));
+            path.append(i).append('-');
+        }
+
+        path.deleteCharAt(path.length()-1);
+        return path.toString();
+    }
+
         //задание3(колво цифр)
-        public static int digitsCount(long n) {
-            return n < 10 ? 1 : 1 + digitsCount(n / 10);//через оператор
+    public static int digitsCount(long n) {
+         return n < 10 ? 1 : 1 + digitsCount(n / 10);//через т.оператор
     }
 
         //задание4(найти слова за баллы)
-        public static int totalPoints(String[] words, String scrambled) {
-            int result = 0;
-            Map<Character, Integer> scrambledMap = createCharMap(scrambled);//словарь символов из ключевого слова
+    public static int totalPoints(String[] words, String scrambled) {
+        int result = 0;
+        Map<Character, Integer> scrambledMap = createCharMap(scrambled);//словарь символов из ключевого слова
 
-            for (String word : words) {
-                if (isValidWord(word, scrambledMap)) {
-                    result += word.length() == 3 ? 1 : word.length() == 4 ? 2 : word.length() == 5 ? 3 : 54;
-                }
-            }
-            return result;
-        }
-
+          for (String word : words) {
+             if (isValidWord(word, scrambledMap)) {
+             result += word.length() == 3 ? 1 : word.length() == 4 ? 2 : word.length() == 5 ? 3 : 54;
+             }
+          }
+        return result;
+    }
     private static boolean isValidWord(String word, Map<Character, Integer> scrambledMap) {
         Map<Character, Integer> wordMap = createCharMap(word);//словарь символов из слова
         for (char c : wordMap.keySet()) {
@@ -176,12 +160,12 @@ public class work5 {
     }
 
         //задание5(пара дающая 8)
-        public static int[][] sumsUp(int[] arr) {
-            List<int[]> pairs = new ArrayList<>();
-            Set<Integer> set = new HashSet<>();
+    public static int[][] sumsUp(int[] arr) {
+        List<int[]> pairs = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
 
             for (int num : arr) {
-                if (set.contains(8 - num)) {//есть ли "8 - 5 = 5 == 3,5"
+                if (set.contains(8 - num)) {//if "8 - 5" есть в сете,то "3,5"
                     pairs.add(new int[]{8 - num, num});
                 }
                 set.add(num);
@@ -189,49 +173,46 @@ public class work5 {
             for (int[] pair : pairs) {
                 Arrays.sort(pair);//сортировка внутри пар
             }
-
-            return pairs.toArray(new int[pairs.size()][]);
-        }
+        return pairs.toArray(new int[pairs.size()][]);
+    }
 
         //задание6
-        public static String takeDownAverage(String[] percents) {
-            int avg = 0;
-            for (String s : percents)
-                avg += Integer.parseInt(s.substring(0, s.length() - 1));
-            return (avg / percents.length - percents.length*5 - 5) + "%";
-        }
+    public static String takeDownAverage(String[] arr) {
+        int result = 0;
+            for (String s : arr)//убрать процент и в число
+                result += Integer.parseInt(s.replaceAll("%", ""));
+            return (result / arr.length - arr.length*5 - 5) + "%";
+    }
 
         //задание7
-        public static String caesarCipher(String[] operation, String message, int shift) {
-            StringBuilder result = new StringBuilder();
-            String mode = operation[0].toLowerCase();
+    public static String caesarCipher(String[] operation, String message, int shift) {
+        StringBuilder result = new StringBuilder();
+        String mode = operation[0].toLowerCase();
+
+            if (mode.equals("decode")) {
+                shift = (26 - shift % 26) % 26;
+            } else {
+                shift = shift % 26;
+            }
 
             for (char character : message.toCharArray()) {
-                if (Character.isLetter(character)) { // Проверка, является ли символ буквой
-                    int base = Character.isUpperCase(character) ? 'A' : 'a';
-                    if (mode.equals("decode")) {
-                        shift = (shift % 26 + 26) % 26; // Учтем обратный сдвиг по модулю 26
-                        char shifted = (char) (((character - base - shift + 26) % 26) + base); // Декодирование
-                        result.append(shifted);
-                    } else {
-                        char shifted = (char) (((character - base + shift) % 26) + base); // Шифрование
-                        result.append(shifted);
-                    }
+                if (Character.isLetter(character)) {
+                    int base = Character.isUpperCase(character) ? 'A' : 'a';//заглавная или нет
+                    char shifted = (char) (((character - base + shift + 26) % 26) + base);
+                    result.append(shifted);
                 } else {
-                    result.append(character); // Если символ не является буквой, добавляем его без изменений
+                    result.append(character);
                 }
             }
 
-            return result.toString();
-        }
-
+        return result.toString();
+    }
 
 
     //задание8
         public static int setSetup(int n, int k) {
             return factorial(n) / factorial(n - k);
         }
-
     private static int factorial(int number) {
         if (number <= 1) {
             return 1;

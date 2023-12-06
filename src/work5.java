@@ -72,20 +72,20 @@ public class work5 {
     public static String spiderVsFly(String Spider, String Fly){
         int spider = Character.getNumericValue(Spider.charAt(1));//круг
         int fly = Character.getNumericValue(Fly.charAt(1));
-        int circle = Math.abs(Spider.charAt(0) - Fly.charAt(0));//какая часть круга
+        int share = Math.abs(Spider.charAt(0) - Fly.charAt(0));//доля круга
 
         int walk = 1;
         double minLen = 100;
         int min_route = 0;
 
-        if (circle > 8 - circle){
-            circle = 8 - circle;
+        if (share > 8 - share){
+            share = 8 - share;
             walk = -1;
         }
 
         for (int i = 0; i < 5; i++){//длина подходящей дуги
-            double len = (Math.abs(spider - i) + Math.abs(fly - i));
-            len += circle * Math.sqrt(2*i*i - 2*i*i*Math.cos(Math.toRadians(45)));
+            double len = (Math.abs(spider - i) + Math.abs(fly - i));//разница между кругами
+            len += share * Math.sqrt(2*i*i - 2*i*i*Math.cos(Math.toRadians(45)));
             //дуга=корню из суммы квадратов радиусов-2*радиусов на косинус
             if (len < minLen) {
                 minLen = len;
@@ -95,7 +95,6 @@ public class work5 {
 
         int spiderMove = min_route > spider ? 1 : -1;//направление от ц или к
         StringBuilder path = new StringBuilder();//для построения пути
-
         //окружность, пока не= минимальный круг+движение к А или от,
         for (int i = spider; i != min_route + spiderMove; i += spiderMove){
             if (i == 0){//центр
@@ -108,7 +107,7 @@ public class work5 {
 
         //по кругу если не через центр
         if (min_route != 0){
-            for (int i = 0; i < circle; i++){//возвращаем по индексу,-3 тк ы4-,+walk определение сектора
+            for (int i = 0; i < share; i++){//возвращаем по индексу,-3 тк ы4-,+walk определение сектора
                 path.append(Character.toString(path.charAt(path.length() - 3) + walk)).append(min_route).append('-');
             }
         }
@@ -220,10 +219,10 @@ public class work5 {
         return number * factorial(number - 1);
     }
 
-        //задание9
-        public static String timeDifference(String cityA, String timestamp, String cityB) {
+        //задание9!!!
+        public static String timeDifference(String cityA, String time, String cityB) {
             Map<String, String> timeZones = new HashMap<>();
-            timeZones.put("Los Angeles", "GMT-08:00");
+            timeZones.put("Los Angeles", "GMT-08:00");//по гринвичискому времени
             timeZones.put("New York", "GMT-05:00");
             timeZones.put("Caracas", "GMT-04:30");
             timeZones.put("Buenos Aires", "GMT-03:00");
@@ -238,28 +237,27 @@ public class work5 {
             SimpleDateFormat originalFormat = new SimpleDateFormat("MMMM d, yyyy HH:mm", Locale.ENGLISH);
             originalFormat.setTimeZone(TimeZone.getTimeZone(timeZones.get(cityA)));
 
-            SimpleDateFormat targetFormat = new SimpleDateFormat("MMMM d, yyyy HH:mm", Locale.ENGLISH);
+            SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-M-d HH:mm", Locale.ENGLISH);
             targetFormat.setTimeZone(TimeZone.getTimeZone(timeZones.get(cityB)));
 
             try {
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(originalFormat.parse(timestamp));
+                cal.setTime(originalFormat.parse(time));//
                 return targetFormat.format(cal.getTime());
             } catch (ParseException e) {
                 e.printStackTrace();
                 return "Invalid date format";
             }
-
         }
 
         //задание10
             public static boolean isNew(int number) {
-                if (number < 10) {
+                if (number < 10) {//всегда нов.
                     return true;
                 }
-                char[] digits = String.valueOf(number).toCharArray();
-                for (int i = 1; i < digits.length; i++) {
-                    if (digits[i] != '0' && digits[i] < digits[0]) {
+                char[] numbers = String.valueOf(number).toCharArray();//строка-массив символов
+                for (int i = 1; i < numbers.length; i++) {
+                    if (numbers[i] != '0' && numbers[i] < numbers[0]) {
                         return false;
                     }
                 }
